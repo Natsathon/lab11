@@ -68,8 +68,13 @@ int drawCard() {
 }
 
 int calScore(int x, int y, int z) {
-    int sum = x + y + z;
-    return sum % 10;
+    int score = 0;
+    if (x > 10) x = 10;
+    if (y > 10) y = 10;
+    if (z > 10) z = 10;
+
+    score = (x + y + z) % 10;
+    return score;
 }
 
 int findYugiAction(int s) {
@@ -81,12 +86,11 @@ int findYugiAction(int s) {
         return (std::rand() % 100 < 69) ? 1 : 2;
     }
 }
-
 void checkWinner(int p, int y) {
     std::cout << std::endl << "---------------------------------" << std::endl;
     if (p > y)
-        std::cout << "|          Player wins!!!       |" << std::endl;
-    else if (y > p)
+        std::cout << "|         Player wins!!!        |" << std::endl;
+    else if (p < y)
         std::cout << "|          Yugi wins!!!         |" << std::endl;
     else
         std::cout << "|             Draw!!!           |" << std::endl;
