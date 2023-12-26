@@ -1,82 +1,95 @@
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 
-using namespace std;
+int drawCard();
+int calScore(int x, int y, int z);
+int findYugiAction(int s);
+void checkWinner(int p, int y);
 
-string cardNames[] = {"","A","2","3","4","5","6","7","8","9","10","J","Q","K"};
-int cardScores[] = {0,1,2,3,4,5,6,7,8,9,10,10,10,10};
+int main() {
+    std::srand(std::time(0));
 
-int drawCard(void){
-	//Write the function to random the number from 1 to 13 and return that random number.
-	//srand() is used in main(). Do not use srand() here.
+    int playerCard1 = drawCard();
+    int playerCard2 = drawCard();
+    int playerScore = calScore(playerCard1, playerCard2, 0);
+
+    std::cout << "---------ORE NO TURN, DRAW!!!------------" << std::endl;
+    std::cout << "Your cards: " << playerCard1 << " " << playerCard2 << std::endl;
+    std::cout << "Your score: " << playerScore << std::endl;
+
+    int playerChoice;
+    do {
+        std::cout << "(1) Destiny draw (2) Stay, SELECT: ";
+        std::cin >> playerChoice;
+
+        if (playerChoice == 1) {
+            int playerCard3 = drawCard();
+            int newPlayerScore = calScore(playerCard1, playerCard2, playerCard3);
+            std::cout << "Player draws the 3rd card!!!" << std::endl;
+            std::cout << "Your 3rd card: " << playerCard3 << std::endl;
+            std::cout << "Your new score: " << newPlayerScore << std::endl;
+            playerScore = newPlayerScore;
+        } else if (playerChoice != 2) {
+            std::cout << "Invalid choice. Please enter 1 or 2." << std::endl;
+        }
+
+    } while (playerChoice != 2);
+
+    std::cout << "------------ Turn end -------------------" << std::endl;
+
+    int yugiCard1 = drawCard();
+    int yugiCard2 = drawCard();
+    int yugiScore = calScore(yugiCard1, yugiCard2, 0);
+
+    std::cout << "---------YUGI'S TURN, DRAW!!!------------" << std::endl;
+    std::cout << "Yugi's cards: " << yugiCard1 << " " << yugiCard2 << std::endl;
+    std::cout << "Yugi's score: " << yugiScore << std::endl;
+
+    int yugiChoice = findYugiAction(yugiScore);
+    if (yugiChoice == 1) {
+        int yugiCard3 = drawCard();
+        int newYugiScore = calScore(yugiCard1, yugiCard2, yugiCard3);
+        std::cout << "Yugi draws the 3rd card!!!" << std::endl;
+        std::cout << "Yugi's 3rd card: " << yugiCard3 << std::endl;
+        std::cout << "Yugi's new score: " << newYugiScore << std::endl;
+        yugiScore = newYugiScore;
+    }
+
+    std::cout << "------------ Turn end -------------------" << std::endl;
+
+    checkWinner(playerScore, yugiScore);
+
+    return 0;
 }
 
-int calScore(int x,int y,int z){
-	//Write the function to calculate the score with is the rightmost digit of summation of the scores from three cards.
-	//Return the score. 
+int drawCard() {
+    return std::rand() % 13 + 1; 
 }
 
-int findYugiAction(int s){	
-	if(s == 9) return 2; // Yugi will definitely stay (2) when current score (s) is equal to 9
-	else if(s < 6) return 1; // Yugi will definitely draw (1) when current score (s) is less than 6
-	else{
-		// If current score is 6,7,8, Yugi will draw with probability 69% and will stay with probability 31% 
-		// Write conditions here using random number 
-	}
+int calScore(int x, int y, int z) {
+    int sum = x + y + z;
+    return sum % 10;
 }
 
-void checkWinner(int p, int y){
-	// Write condition for cout in this function
-	cout << "\n---------------------------------\n";
-	cout <<   "|             Draw!!!           |"; // when p is equal to y
-	cout <<   "|         Player wins!!!        |"; // when p is greater than y
-	cout <<   "|          Yugi wins!!!         |"; // when p is less than y
-	cout << "\n---------------------------------\n";
+int findYugiAction(int s) {
+    if (s == 9)
+        return 2;  // Yugi stays
+    else if (s < 6)
+        return 1;  // Yugi destiny draw
+    else {
+        // Yugi has 69% chance of destiny draw, 31% chance of stay
+        return (std::rand() % 100 < 69) ? 1 : 2;
+    }
 }
 
-int main(){	
-    srand(________________); //This line of code is not completed. Fill the correct input of srand(); 
-
-	int playerScore, yugiScore, playerAction, yugiAction;
-	int playerCards[3] = {drawCard(), drawCard(), 0};
-	int yugiCards[3]; //This line of code is not completed. You need to initialize value of yugiCards[].
-	
-	
-	cout << "---------ORE NO TURN, DRAW!!!------------\n";
-	cout << "Your cards: " << cardNames[playerCards[0]] << " " << cardNames[playerCards[1]] << "\n";
-	playerScore = calScore(playerCards[0],playerCards[1],playerCards[2]);
-	cout << "Your score: " << playerScore << "\n";
-	do{
-		cout << "(1) Destiny draw (2) Stay, SELECT: ";
-		cin >> playerAction;
-	}while(________________); //This line of code is not completed. You need to set the condition to do loop if user's input is not 1 or 2. 
-	if(playerAction == 1){
-		//The following lines of code are not completed. Please correct it.
-		/*
-		________________ = drawCard();
-  		playerScore = ________________;
-		cout << "Player draws the 3rd card!!!" << "\n";
-		cout << "Your 3rd card: " << "\n";
-		cout << "Your new score: " << "\n";
-		*/
-	}
-	cout << "------------ Turn end -------------------\n\n";
-	
-	
-	//The following lines of code for Yugi's turn are not completed. Please correct it.
-	/*
-	cout << "---------YUGI'S TURN, DRAW!!!------------\n";
-	cout << "Yugi's cards: " << "\n";
-	yugiScore = ___________________;
-	cout << "Yugi's score: " << yugiScore << "\n";
-	yugiAction = findYugiAction(__________________);
-	if(yugiAction == 1){
-		cout << "Yugi draws the 3rd card!!!\n";
-		cout << "Yugi's 3rd card: " << "\n";
-		cout << "Yugi's new score: " << "\n";
-	}
-	cout << "------------ Turn end -------------------\n";
-	*/
-	
-	checkWinner(playerScore,yugiScore);
+void checkWinner(int p, int y) {
+    std::cout << std::endl << "---------------------------------" << std::endl;
+    if (p > y)
+        std::cout << "|          Player wins!!!       |" << std::endl;
+    else if (y > p)
+        std::cout << "|          Yugi wins!!!         |" << std::endl;
+    else
+        std::cout << "|             Draw!!!           |" << std::endl;
+    std::cout << "---------------------------------" << std::endl;
 }
