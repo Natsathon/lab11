@@ -74,11 +74,10 @@ int calScore(int x, int y, int z) {
 
 int findYugiAction(int s) {
     if (s == 9)
-        return 2;  // Yugi stays
+        return 2; 
     else if (s < 6)
-        return 1;  // Yugi destiny draw
+        return 1; 
     else {
-        // Yugi has 69% chance of destiny draw, 31% chance of stay
         return (std::rand() % 100 < 69) ? 1 : 2;
     }
 }
